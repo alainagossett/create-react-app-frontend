@@ -16,6 +16,16 @@ function Index(props) {
             [event.target.name]: event.target.value,
         }))
     }
+        //using prevState above does the same function as below
+        //prevState will help maintain references in browser instead of making new ones like the function below does
+    /*
+    const handleChange = (event) => {
+        setNewForm({
+            ...newForm,
+            [event.target.name]: event.target.value,
+        })
+    }
+    */
     
     //handleSubmit function - will submit new user for creation
     const handleSubmit = (event) => {
