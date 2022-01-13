@@ -11,21 +11,21 @@ function Index(props) {
 
     //handleChange function - capture user input as its typed
     const handleChange = (event) => {
-        setNewForm((prevState) => ({
-            ...prevState,
-            [event.target.name]: event.target.value,
-        }))
-    }
-        //using prevState above does the same function as below
-        //prevState will help maintain references in browser instead of making new ones like the function below does
-    /*
-    const handleChange = (event) => {
         setNewForm({
             ...newForm,
             [event.target.name]: event.target.value,
         })
     }
+    /*
+    const handleChange = (event) => {
+        setNewForm((prevState) => ({
+            ...prevState,
+            [event.target.name]: event.target.value,
+        }))
+    }
     */
+    //prevState will help maintain references in browser instead of making new ones like the function below does
+    //prevState is a callback function and passes the previous verson of the state
     
     //handleSubmit function - will submit new user for creation
     const handleSubmit = (event) => {
