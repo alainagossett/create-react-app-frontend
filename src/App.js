@@ -18,8 +18,8 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
-      <Main />
+      <Header user={user} />
+      <Main user={user} />
     </div>
   );
 }

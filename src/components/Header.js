@@ -7,8 +7,21 @@ function Header(props) {
             <Link to="/">
                 <div>People App</div>
             </Link>
-            <button onClick={login}>Login</button>
-            <button onClick={logout}>Logout</button>
+            {
+                props.user ? 
+                <>
+                <img style={{
+                    height: '3.125rem',
+                    width: '3.125rem',
+                    borderRadius: '50%'
+                }}
+                src={props.user.photoURL} 
+                alt={props.user.displayName} />
+                <button onClick={logout}>Logout</button>
+                </>
+                :
+                <button onClick={login}>Login</button>
+            }
         </nav>
     )
 };
