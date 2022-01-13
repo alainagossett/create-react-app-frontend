@@ -11,6 +11,8 @@ function Index(props) {
 
     //handleChange function - capture user input as its typed
     const handleChange = (event) => {
+        if(!props.user) return;
+        //prevents form from input if there's no login
         setNewForm({
             ...newForm,
             [event.target.name]: event.target.value,
@@ -29,6 +31,8 @@ function Index(props) {
     
     //handleSubmit function - will submit new user for creation
     const handleSubmit = (event) => {
+        if(!props.user) return;
+        //prevents submission if there's no login
         event.preventDefault()
         props.createPeople(newForm)
         setNewForm({
@@ -84,7 +88,7 @@ function Index(props) {
           onChange={handleChange}
         />
         <br />
-        <input type="submit" value="Create Person" />
+        <input disabled={!props.user} type="submit" value="Create Person" />
       </form>
         {props.people ? loaded() : loading()}
     </section>

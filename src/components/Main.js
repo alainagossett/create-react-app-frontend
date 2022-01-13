@@ -57,7 +57,7 @@ function Main(props) {
         <main>
             <Switch>
                 <Route exact path="/">
-                    <Index people={people} createPeople={createPeople}/>
+                    <Index user={props.user} people={people} createPeople={createPeople}/>
                 </Route>
                 <Route path="/people/:id" render={(rp) => (
                         props.user ? 
