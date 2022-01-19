@@ -10,6 +10,7 @@ function Main(props) {
     // const URL = "https://express-react-people-ag.herokuapp.com/people/"
 
     //Retrieve all the people (GET)
+    /*
     const getPeople = async () => {
         if(!props.user) return;
         const token = await props.user.getIdToken();
@@ -24,13 +25,15 @@ function Main(props) {
         const data = await response.json()
         setPeople(data)
     };
+    */
+   // Moved this function to the useEffect function to solve useEffect warning
 
     //Create people (POST)
     const createPeople = async (person) => {
         if(!props.user) return;
         const token = await props.user.getIdToken();
         // console.log(token);
-        await fetch(URL, {
+       const response = await fetch(URL, {
             method: "POST",
             headers: {
                 "Content-Type": "Application/json",
@@ -39,34 +42,70 @@ function Main(props) {
             body: JSON.stringify(person),
         });
         //update list of people
-        getPeople();
+        // getPeople();
+        const people = await response.json();
+        setPeople(people);
     };
 
     //Update people (PUT)
     const updatePeople = async (person, id) => {
-        await fetch(URL + id, {
+        if(!props.user) return;
+        const token = await props.user.getIdToken();
+        const response = await fetch(URL + id, {
             method: "PUT",
             headers: {
                 "Content-Type": "Application/json",
+                "Authorization" : "Bearer " + token
             },
             body: JSON.stringify(person)
         });
         //update list of people
-        getPeople();
+        // getPeople();
+        const people = await response.json();
+        setPeople(people);
     }
 
     //Delete people (DELETE)
     const deletePeople = async (id) => {
-        await fetch(URL + id, {
-            method: "DELETE"
+        if(!props.user) return;
+        const token = await props.user.getIdToken();
+        const response = await fetch(URL + id, {
+            method: "DELETE",
+            headers: {
+                "Authorization" : "Bearer " + token
+            }
         });
-        getPeople();
+        // getPeople();
+        const people = await response.json();
+        setPeople(people);
+    }
+
+    //Prevents people from being listed if a user is logged out
+    const handleLogout = async() => {
+        setPeople([]);
     }
 
     //Run getPeople once when component is mounted
     useEffect(() => {
+        const getPeople = async () => {
+            if(!props.user) return;
+            const token = await props.user.getIdToken();
+    
+            const response = await fetch(URL, {
+                method: 'GET',
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            })
+    
+            const data = await response.json()
+            setPeople(data)
+        };
+
         if(props.user) {
             getPeople()
+        } else {
+            handleLogout()
         }
     }, [props.user]);
 
