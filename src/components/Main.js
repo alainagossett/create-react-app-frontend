@@ -6,22 +6,35 @@ import Show from '../pages/Show'
 function Main(props) {
     const[people, setPeople] = useState([])
 
-    // const URL = "http://localhost:3001/people/"
-    const URL = "https://express-react-people-ag.herokuapp.com/people/"
+    const URL = "http://localhost:3001/people/"
+    // const URL = "https://express-react-people-ag.herokuapp.com/people/"
 
     //Retrieve all the people (GET)
     const getPeople = async () => {
-        const response = await fetch(URL)
+        if(!props.user) return;
+        const token = await props.user.getIdToken();
+
+        const response = await fetch(URL, {
+            method: 'GET',
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })
+
         const data = await response.json()
         setPeople(data)
     };
 
     //Create people (POST)
     const createPeople = async (person) => {
+        if(!props.user) return;
+        const token = await props.user.getIdToken();
+        // console.log(token);
         await fetch(URL, {
             method: "POST",
             headers: {
                 "Content-Type": "Application/json",
+                "Authorization": "Bearer " + token
             },
             body: JSON.stringify(person),
         });
@@ -51,7 +64,11 @@ function Main(props) {
     }
 
     //Run getPeople once when component is mounted
-    useEffect(() => getPeople(), [])
+    useEffect(() => {
+        if(props.user) {
+            getPeople()
+        }
+    }, [props.user]);
 
     return (
         <main>
